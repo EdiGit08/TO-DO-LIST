@@ -1,0 +1,231 @@
+/* --- 1. VARIABLES Y CONFIGURACIÓN BASE --- */
+:root {
+    --fondo: #f0f2f5;
+    --tarjeta: #ffffff;
+    --texto: #1a1a1a;
+    --texto-secundario: #666;
+    --borde: #ddd;
+    --primario: #531cf7;
+    --acento-dark: #bb86fc;
+    --input-bg: #ffffff;
+}
+
+/* Modo Oscuro: Solo actualizamos las variables necesarias */
+body.dark-mode {
+    --fondo: #121212;
+    --tarjeta: #1e1e1e;
+    --texto: #ffffff;
+    --texto-secundario: #aaa;
+    --borde: #333;
+    --input-bg: #2d2d2d;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--fondo);
+    color: var(--texto);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    margin: 0;
+    transition: background-color 0.4s, color 0.4s;
+}
+
+/* --- 2. EL INTERRUPTOR (TOGGLE SWITCH) --- */
+#darkMode {
+    position: fixed;   /* Se mantiene visible al bajar */
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+#btnDarkMode {
+    width: 65px;
+    height: 32px;
+    background-color: #cbd5e0;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 0 5px;
+    transition: background-color 0.4s;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.toggle-circle {
+    width: 24px;
+    height: 24px;
+    background-color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    will-change: transform; /* Optimización para animaciones */
+}
+
+body.dark-mode #btnDarkMode {
+    background-color: #4a5568;
+}
+
+body.dark-mode .toggle-circle {
+    transform: translateX(31px);
+    background-color: #2d3748;
+}
+
+/* --- 3. PANELES Y TARJETAS --- */
+#panelAgregarTarea, #tareasPendientes, #tareasCompletadas {
+    background: var(--tarjeta);
+    padding: 25px;
+    border-radius: 15px;
+    width: 100%;
+    max-width: 500px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: background-color 0.4s, box-shadow 0.4s;
+}
+
+h1 { margin-bottom: 30px; }
+
+h2 { 
+    margin-top: 0;
+    color: var(--primario); 
+    transition: color 0.4s;
+}
+
+body.dark-mode h2 {
+    color: var(--acento-dark);
+}
+
+/* --- 4. INPUTS Y FORMULARIOS --- */
+input, textarea {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0 20px 0;
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+    background-color: var(--input-bg);
+    color: var(--texto);
+    font-size: 1rem;
+    font-family: inherit; /* Hereda Segoe UI automáticamente */
+    box-sizing: border-box;
+    transition: background-color 0.4s, border-color 0.4s, color 0.4s, box-shadow 0.2s;
+    resize: none; /* Bloqueamos el escalado manual para mantener el diseño */
+}
+
+input:focus, textarea:focus {
+    outline: none;
+    border-color: var(--primario);
+    box-shadow: 0 0 0 2px rgba(83, 28, 247, 0.2);
+}
+
+/* Placeholder igual para ambos */
+input::placeholder, 
+textarea::placeholder {
+    font-size: 0.95rem;
+    opacity: 0.7;
+}
+
+button#agregarTarea {
+    background-color: var(--primario);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    width: 100%;
+    font-size: 1rem;
+    transition: transform 0.2s, background-color 0.4s;
+}
+
+button#agregarTarea:active { transform: scale(0.98); }
+
+body.dark-mode button#agregarTarea {
+    background-color: var(--acento-dark);
+    color: #121212;
+}
+
+/* --- 5. LISTA DE TAREAS Y CONTROL DE TEXTO --- */
+ul { list-style: none; padding: 0; }
+
+li {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; /* Alinea al inicio si la descripción es larga */
+    padding: 15px 10px;
+    border-bottom: 1px solid var(--borde);
+    overflow-wrap: break-word; /* Evita que el texto se salga */
+    word-break: break-word;
+}
+
+.info-tarea { 
+    flex: 1; 
+    max-width: 80%; /* Deja espacio para los botones de acción */
+}
+
+.tituloTarea {
+    display: block;
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 4px;
+}
+
+.descripcionTarea {
+    font-size: 0.9rem;
+    color: var(--texto-secundario);
+    white-space: pre-wrap; /* Mantiene saltos de línea del textarea */
+}
+
+/* Tachado para completadas */
+#listaTareasCompletadas .tituloTarea {
+    text-decoration: line-through;
+    color: #777;
+    font-style: italic;
+}
+
+/* --- 6. ACCIONES Y BOTONES --- */
+.acciones-tarea {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-left: 15px;
+}
+
+.btn-eliminar, .btn-editar {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.3rem;
+    padding: 5px;
+    transition: transform 0.2s;
+}
+
+.btn-eliminar:hover, .btn-editar:hover { transform: scale(1.2); }
+
+/* --- 7. DESPLEGABLES --- */
+.header-seccion {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.btn-desplegar {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--primario);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+body.dark-mode .btn-desplegar { color: var(--acento-dark); }
+
+.flecha-cerrada { transform: rotate(-90deg); }
+.ocultar { display: none; }

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de tareas</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" href="img/logo.png?v=1" type="image/png">
+</head>
+<body>
+    <h1> LISTA DE TAREAS </h1>
+
+    <div id="darkMode">
+        <button id="btnDarkMode" class="toggle-rail">
+            <span class="toggle-circle">☀️</span>
+        </button>
+    </div>
+
+    <div id="panelAgregarTarea">
+        <h2> Añade una nueva tarea </h2>
+
+        <label for="tituloTarea"> Titulo </label>
+        <input type="text" id="tituloTarea" placeholder="Añade un titulo">
+        <label for="descripcionTarea">Descripcion</label>
+        <textarea name="descripcionTarea" id="descripcionTarea" placeholder="Añade una descripcion (opcional)"></textarea>
+        <button id="agregarTarea" type="button"> Agregar </button>
+    </div>
+
+    <!-- De esta manera el boton desplegable podra funcionar correctamente-->
+    <div id="tareasPendientes">
+        <div class="header-seccion">
+            <h2>Tus tareas pendientes</h2>
+            <button class="btn-desplegar" data-target="listaTareasPendientes">🔽</button>
+        </div>
+        <div class="contenedor-lista">
+            <ul id="listaTareasPendientes"></ul>
+        </div>
+    </div>
+
+    <div id="tareasCompletadas">
+        <div class="header-seccion">
+            <h2>Tus tareas completadas</h2>
+            <button class="btn-desplegar" data-target="listaTareasCompletadas">🔽</button>
+        </div>
+        <div class="contenedor-lista">
+            <ul id="listaTareasCompletadas"></ul>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
