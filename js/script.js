@@ -24,6 +24,7 @@ document.getElementById('agregarTarea').addEventListener('click', function(e){
         </li>
     `;
 
+    guardar();
     document.getElementById('tituloTarea').value = '';
     document.getElementById('descripcionTarea').value = '';
 });
@@ -34,6 +35,7 @@ document.getElementById('listaTareasPendientes').addEventListener('change', func
         tareaCompletada.querySelector('.btn-editar').hidden = true;
         document.getElementById('listaTareasCompletadas').appendChild(tareaCompletada);
     }
+    guardar();
 });
 
 document.getElementById('listaTareasPendientes').addEventListener('click', function(e){
@@ -56,6 +58,17 @@ document.getElementById('listaTareasPendientes').addEventListener('click', funct
             alert('El titulo de la tarea no puede estar vacío.');
         }
     }
+    guardar();
+});
+
+document.getElementById('listaTareasCompletadas').addEventListener('click', function(e){
+    if(e.target.classList.contains('btn-eliminar')){
+        const tareaEliminar= e.target.closest('li');
+        if(confirm('¿Estás seguro de que deseas eliminar esta tarea?')){
+            tareaEliminar.remove();
+        }
+    }
+    guardar();
 });
 
 document.getElementById('listaTareasCompletadas').addEventListener('change', function(e){
@@ -64,13 +77,19 @@ document.getElementById('listaTareasCompletadas').addEventListener('change', fun
         tareaPendiente.querySelector('.btn-editar').hidden = false;
         document.getElementById('listaTareasPendientes').appendChild(tareaPendiente);
         e.target.checked = false;
+        guardar();
     }
 });
 
 const boton = document.getElementById('btnDarkMode');
 boton.addEventListener('click', function(e){
-    document.body.classList.toggle('dark-mode');
-    if(document.body.classList.contains('dark-mode')){
+    document.documentElement.classList.toggle('dark-mode');
+    if(localStorage.getItem('modoOscuro') === 'true'){
+        localStorage.setItem('modoOscuro', 'false');
+    } else {
+        localStorage.setItem('modoOscuro', 'true');
+    }
+    if(document.documentElement.classList.contains('dark-mode')){
         boton.querySelector('.toggle-circle').textContent = '🌕';
     } else {
         boton.querySelector('.toggle-circle').textContent = '☀️';
@@ -96,3 +115,76 @@ document.addEventListener('click', function(e) {
         }
     }
 });
+
+function guardar() {
+    let tareasPendientes = document.querySelectorAll('#listaTareasPendientes li');
+    let tareasCompletadas = document.querySelectorAll('#listaTareasCompletadas li');
+
+    let tareasPendientesPorGuardar = [];
+    let tareasCompletadasPorGuardar = [];
+
+    tareasPendientes.forEach(tarea => {
+        let titulo = tarea.querySelector('.tituloTarea').textContent;
+        let descripcion = tarea.querySelector('.descripcionTarea').textContent;
+        tareasPendientesPorGuardar.push({titulo, descripcion, completada: false});
+    });
+
+    tareasCompletadas.forEach(tarea => {
+        let titulo = tarea.querySelector('.tituloTarea').textContent;
+        let descripcion = tarea.querySelector('.descripcionTarea').textContent;
+        tareasCompletadasPorGuardar.push({titulo, descripcion, completada: true});
+    });
+
+    localStorage.setItem('tareasPendientes', JSON.stringify(tareasPendientesPorGuardar));
+    localStorage.setItem('tareasCompletadas', JSON.stringify(tareasCompletadasPorGuardar));
+};
+
+function cargar() {
+    let tareasPendientes = JSON.parse(localStorage.getItem('tareasPendientes')) || [];
+    let tareasCompletadas = JSON.parse(localStorage.getItem('tareasCompletadas')) || [];
+    
+    document.getElementById('listaTareasPendientes').innerHTML = '';
+    document.getElementById('listaTareasCompletadas').innerHTML = '';
+
+    tareasPendientes.forEach(tarea => {
+        document.getElementById('listaTareasPendientes').innerHTML += `
+        <li>
+            <div class="info-tarea">
+                <strong class="tituloTarea">${tarea.titulo}</strong>
+                <br>
+                <span class="descripcionTarea">${tarea.descripcion}</span>
+            </div>
+            <div class="acciones-tarea">
+                <input type="checkbox" class="btn-tarea-hecha">
+                <button class="btn-editar">✏️</button>
+                <button class="btn-eliminar">🗑️</button>
+            </div>
+        </li>
+    `;
+    });
+
+    tareasCompletadas.forEach(tarea => {
+        document.getElementById('listaTareasCompletadas').innerHTML += `
+        <li>
+            <div class="info-tarea">
+                <strong class="tituloTarea">${tarea.titulo}</strong>
+                <br>
+                <span class="descripcionTarea">${tarea.descripcion}</span>
+            </div>
+            <div class="acciones-tarea">
+                <input type="checkbox" class="btn-tarea-hecha" checked>
+                <button class="btn-editar" hidden>✏️</button>
+                <button class="btn-eliminar">🗑️</button>
+            </div>
+        </li>
+    `;
+    });
+
+    if(localStorage.getItem('modoOscuro') === 'true'){
+        boton.querySelector('.toggle-circle').textContent = '🌕';
+    } else {
+         boton.querySelector('.toggle-circle').textContent = '☀️';
+    }
+};
+
+cargar();

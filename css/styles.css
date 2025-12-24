@@ -10,8 +10,8 @@
     --input-bg: #ffffff;
 }
 
-/* Modo Oscuro: Solo actualizamos las variables necesarias */
-body.dark-mode {
+/* Modo Oscuro: Aplicado al elemento raíz */
+.dark-mode {
     --fondo: #121212;
     --tarjeta: #1e1e1e;
     --texto: #ffffff;
@@ -29,12 +29,13 @@ body {
     align-items: center;
     padding: 20px;
     margin: 0;
+    /* La transición se mantiene para cambios manuales */
     transition: background-color 0.4s, color 0.4s;
 }
 
 /* --- 2. EL INTERRUPTOR (TOGGLE SWITCH) --- */
 #darkMode {
-    position: fixed;   /* Se mantiene visible al bajar */
+    position: fixed;
     top: 20px;
     right: 20px;
     z-index: 1000;
@@ -66,14 +67,15 @@ body {
     font-size: 14px;
     transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    will-change: transform; /* Optimización para animaciones */
+    will-change: transform;
 }
 
-body.dark-mode #btnDarkMode {
+/* Ajustes para el botón en modo oscuro */
+.dark-mode #btnDarkMode {
     background-color: #4a5568;
 }
 
-body.dark-mode .toggle-circle {
+.dark-mode .toggle-circle {
     transform: translateX(31px);
     background-color: #2d3748;
 }
@@ -98,7 +100,7 @@ h2 {
     transition: color 0.4s;
 }
 
-body.dark-mode h2 {
+.dark-mode h2 {
     color: var(--acento-dark);
 }
 
@@ -112,10 +114,10 @@ input, textarea {
     background-color: var(--input-bg);
     color: var(--texto);
     font-size: 1rem;
-    font-family: inherit; /* Hereda Segoe UI automáticamente */
+    font-family: inherit;
     box-sizing: border-box;
     transition: background-color 0.4s, border-color 0.4s, color 0.4s, box-shadow 0.2s;
-    resize: none; /* Bloqueamos el escalado manual para mantener el diseño */
+    resize: none;
 }
 
 input:focus, textarea:focus {
@@ -124,7 +126,6 @@ input:focus, textarea:focus {
     box-shadow: 0 0 0 2px rgba(83, 28, 247, 0.2);
 }
 
-/* Placeholder igual para ambos */
 input::placeholder, 
 textarea::placeholder {
     font-size: 0.95rem;
@@ -146,7 +147,7 @@ button#agregarTarea {
 
 button#agregarTarea:active { transform: scale(0.98); }
 
-body.dark-mode button#agregarTarea {
+.dark-mode button#agregarTarea {
     background-color: var(--acento-dark);
     color: #121212;
 }
@@ -157,16 +158,16 @@ ul { list-style: none; padding: 0; }
 li {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start; /* Alinea al inicio si la descripción es larga */
+    align-items: flex-start;
     padding: 15px 10px;
     border-bottom: 1px solid var(--borde);
-    overflow-wrap: break-word; /* Evita que el texto se salga */
+    overflow-wrap: break-word;
     word-break: break-word;
 }
 
 .info-tarea { 
     flex: 1; 
-    max-width: 80%; /* Deja espacio para los botones de acción */
+    max-width: 80%;
 }
 
 .tituloTarea {
@@ -179,10 +180,9 @@ li {
 .descripcionTarea {
     font-size: 0.9rem;
     color: var(--texto-secundario);
-    white-space: pre-wrap; /* Mantiene saltos de línea del textarea */
+    white-space: pre-wrap;
 }
 
-/* Tachado para completadas */
 #listaTareasCompletadas .tituloTarea {
     text-decoration: line-through;
     color: #777;
@@ -225,7 +225,7 @@ li {
     transition: transform 0.3s ease;
 }
 
-body.dark-mode .btn-desplegar { color: var(--acento-dark); }
+.dark-mode .btn-desplegar { color: var(--acento-dark); }
 
 .flecha-cerrada { transform: rotate(-90deg); }
 .ocultar { display: none; }

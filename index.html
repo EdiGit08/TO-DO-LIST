@@ -6,6 +6,13 @@
     <title>Lista de tareas</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="icon" href="img/logo.png?v=1" type="image/png">
+    <script>
+        if(localStorage.getItem('modoOscuro') === 'true'){
+            document.documentElement.classList.add('dark-mode');
+        } else {
+            document.documentElement.classList.remove('dark-mode');
+        }
+    </script>
 </head>
 <body>
     <h1> LISTA DE TAREAS </h1>
